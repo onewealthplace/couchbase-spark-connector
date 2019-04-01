@@ -39,7 +39,7 @@ public class CouchbaseDocumentRDD<T extends Document<?>> extends JavaRDD<T> {
     }
 
     public static <T extends Document<?>> CouchbaseDocumentRDD<T> couchbaseDocumentRDD(JavaRDD<T> source) {
-        return new CouchbaseDocumentRDD<T>(source);
+        return new CouchbaseDocumentRDD<>(source);
     }
 
     public void saveToCouchbase() {
@@ -55,7 +55,7 @@ public class CouchbaseDocumentRDD<T extends Document<?>> extends JavaRDD<T> {
     }
 
     public void saveToCouchbase(StoreMode storeMode, String bucket) {
-        new DocumentRDDFunctions<T>(source.rdd()).saveToCouchbase(bucket, storeMode, scala.Option.<Duration>apply(null));
+        new DocumentRDDFunctions<>(source.rdd()).saveToCouchbase(bucket, storeMode, scala.Option.apply(null));
     }
 
     public void saveToCouchbase(long timeout) {
@@ -71,8 +71,8 @@ public class CouchbaseDocumentRDD<T extends Document<?>> extends JavaRDD<T> {
     }
 
     public void saveToCouchbase(StoreMode storeMode, String bucket, long timeout) {
-        new DocumentRDDFunctions<T>(source.rdd()).saveToCouchbase(bucket, storeMode,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)));
+        new DocumentRDDFunctions<>(source.rdd()).saveToCouchbase(bucket, storeMode,
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)));
     }
 
     @Override

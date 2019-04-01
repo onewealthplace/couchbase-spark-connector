@@ -15,13 +15,13 @@
  */
 package com.couchbase
 
-import scala.reflect.ClassTag
-
+import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
+import com.couchbase.client.java.document.{Document, JsonArrayDocument, JsonDocument}
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 
-import com.couchbase.client.java.document.json.{JsonArray, JsonObject}
-import com.couchbase.client.java.document.{JsonArrayDocument, JsonDocument, Document}
+import scala.language.implicitConversions
+import scala.reflect.ClassTag
 
 package object spark {
 

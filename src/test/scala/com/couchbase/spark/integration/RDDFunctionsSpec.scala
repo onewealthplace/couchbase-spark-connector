@@ -18,14 +18,11 @@ package com.couchbase.spark.integration
 import com.couchbase.client.java.Bucket
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject
-import com.couchbase.client.java.query.N1qlQuery
-import com.couchbase.client.java.query.core.N1qlQueryExecutor
-import com.couchbase.client.java.view.{SpatialViewQuery, ViewQuery}
+import com.couchbase.spark._
 import com.couchbase.spark.connection.{CouchbaseConfig, CouchbaseConnection}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
-import com.couchbase.spark._
 
 /**
  * Integration test to verify RDD functionality in combination with Couchbase Serve
@@ -39,8 +36,8 @@ class RDDFunctionsSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
   private val appName = "cb-int-specs2"
   private val bucketName = "default"
 
-  private var sparkContext: SparkContext = null
-  private var bucket: Bucket = null
+  private var sparkContext: SparkContext = _
+  private var bucket: Bucket = _
 
   override def beforeAll() {
     val conf = new SparkConf().setMaster(master).setAppName(appName)

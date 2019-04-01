@@ -48,7 +48,7 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
     }
 
     public static <T> CouchbaseRDD<T> couchbaseRDD(JavaRDD<T> source) {
-        return new CouchbaseRDD<T>(source, source.classTag());
+        return new CouchbaseRDD<>(source, source.classTag());
     }
 
     /**
@@ -143,9 +143,9 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
      */
     @SuppressWarnings({"unchecked"})
     public <D extends Document> JavaRDD<D> couchbaseGet(String bucket, Class<D> clazz) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseGet(
+        return new RDDFunctions<>(source.rdd()).couchbaseGet(
             bucket,
-            scala.Option.<Duration>apply(null),
+                scala.Option.apply(null),
             SparkUtil.classTag(clazz),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
@@ -163,9 +163,9 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
      */
     @SuppressWarnings({"unchecked"})
     public <D extends Document> JavaRDD<D> couchbaseGet(String bucket, Class<D> clazz, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseGet(
+        return new RDDFunctions<>(source.rdd()).couchbaseGet(
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
             SparkUtil.classTag(clazz),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
@@ -173,7 +173,7 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> get) {
-        return couchbaseSubdocLookup(get, Collections.<String>emptyList(), null);
+        return couchbaseSubdocLookup(get, Collections.emptyList(), null);
     }
 
     @SuppressWarnings({"unchecked"})
@@ -183,18 +183,18 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> get, List<String> exists, String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSubdocLookup(
+        return new RDDFunctions<>(source.rdd()).couchbaseSubdocLookup(
             SparkUtil.listToSeq(get),
             SparkUtil.listToSeq(exists),
             bucket,
-            scala.Option.<Duration>apply(null),
+                scala.Option.apply(null),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> get, long timeout) {
-        return couchbaseSubdocLookup(get, Collections.<String>emptyList(), null, timeout);
+        return couchbaseSubdocLookup(get, Collections.emptyList(), null, timeout);
     }
 
     @SuppressWarnings({"unchecked"})
@@ -204,11 +204,11 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> get, List<String> exists, String bucket, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSubdocLookup(
+        return new RDDFunctions<>(source.rdd()).couchbaseSubdocLookup(
             SparkUtil.listToSeq(get),
             SparkUtil.listToSeq(exists),
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
     }
@@ -220,10 +220,10 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocMutationResult> couchbaseSubdocMutate(List<SubdocMutationSpec> specs, String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSubdocMutate(
+        return new RDDFunctions<>(source.rdd()).couchbaseSubdocMutate(
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(null),
+                scala.Option.apply(null),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
     }
@@ -235,10 +235,10 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocMutationResult> couchbaseSubdocMutate(List<SubdocMutationSpec> specs, String bucket, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSubdocMutate(
+        return new RDDFunctions<>(source.rdd()).couchbaseSubdocMutate(
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
             LCLIdentity.INSTANCE
         ).toJavaRDD();
     }
@@ -255,72 +255,72 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseViewRow> couchbaseView() {
-        return new RDDFunctions<T>(source.rdd()).couchbaseView(null, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseView(null, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseViewRow> couchbaseView(String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseView(bucket, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseView(bucket, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView() {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSpatialView(null, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseSpatialView(null, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSpatialView(bucket, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseSpatialView(bucket, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery() {
-        return new RDDFunctions<T>(source.rdd()).couchbaseQuery(null, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseQuery(null, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseQuery(bucket, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseQuery(bucket, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseAnalytics() {
-        return new RDDFunctions<T>(source.rdd()).couchbaseAnalytics(null, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseAnalytics(null, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseAnalytics(String bucket) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseAnalytics(bucket, scala.Option.<Duration>apply(null), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseAnalytics(bucket, scala.Option.apply(null), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseViewRow> couchbaseView(long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseView(null, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseView(null, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseViewRow> couchbaseView(String bucket, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseView(bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseView(bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSpatialView(null, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseSpatialView(null, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(String bucket, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseSpatialView(bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseSpatialView(bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseQuery(null, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseQuery(null, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     @SuppressWarnings({"unchecked"})
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(String bucket, long timeout) {
-        return new RDDFunctions<T>(source.rdd()).couchbaseQuery(bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
+        return new RDDFunctions<>(source.rdd()).couchbaseQuery(bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)), LCLIdentity.INSTANCE).toJavaRDD();
     }
 
     /**
@@ -328,6 +328,7 @@ public class CouchbaseRDD<T> extends JavaRDD<T> {
      *
      * We'd be better off implementing the java interfaces from scala, at a later point.
      */
+    @SuppressWarnings("Annotator")
     private static class LCLIdentity extends Predef.$less$colon$less {
 
         public static LCLIdentity INSTANCE = new LCLIdentity();

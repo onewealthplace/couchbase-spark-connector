@@ -83,7 +83,7 @@ object CouchbaseConfig {
   val DEFAULT_MAX_RETRY_DELAY = "1000"
   val DEFAULT_MIN_RETRY_DELAY = "0"
 
-  def apply(cfg: SparkConf) = {
+  def apply(cfg: SparkConf): CouchbaseConfig = {
     val username = cfg
       .getOption(USERNAME)
       .orElse(cfg.getOption(COMPAT_USERNAME))

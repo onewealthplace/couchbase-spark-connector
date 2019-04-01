@@ -22,7 +22,8 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import java.util.Arrays;
+
+import java.util.Collections;
 import java.util.List;
 
 import static com.couchbase.spark.japi.CouchbaseSparkContext.couchbaseContext;
@@ -56,7 +57,7 @@ public class CouchbaseSparkContextTest {
         String id = "airline_2357";
 
         List<JsonDocument> found = csc
-            .couchbaseGet(Arrays.asList(id))
+                .couchbaseGet(Collections.singletonList(id))
             .collect();
 
         assertEquals(1, found.size());
@@ -69,7 +70,7 @@ public class CouchbaseSparkContextTest {
         String id = "airline_2357";
 
         List<SubdocLookupResult> found = csc
-            .couchbaseSubdocLookup(Arrays.asList(id), Arrays.asList("name"))
+                .couchbaseSubdocLookup(Collections.singletonList(id), Collections.singletonList("name"))
             .collect();
 
         System.out.println(found);

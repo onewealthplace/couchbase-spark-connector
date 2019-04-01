@@ -17,6 +17,8 @@ package com.couchbase.spark
 
 import org.apache.spark.sql.{DataFrameReader, DataFrameWriter, Row}
 
+import scala.language.implicitConversions
+
 package object sql {
 
   implicit def toDataFrameReaderFunctions(dfr: DataFrameReader): DataFrameReaderFunctions =

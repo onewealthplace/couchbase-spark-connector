@@ -17,6 +17,7 @@ package com.couchbase.spark.japi;
 
 import scala.collection.Seq;
 import scala.reflect.ClassTag;
+
 import java.util.List;
 
 public class SparkUtil {
@@ -26,6 +27,6 @@ public class SparkUtil {
     }
 
     public static <T> Seq<T> listToSeq(List<T> source) {
-        return scala.collection.JavaConversions.asScalaBuffer(source).seq();
+        return scala.collection.JavaConverters.asScalaBuffer(source).seq();
     }
 }

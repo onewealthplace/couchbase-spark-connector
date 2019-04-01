@@ -19,6 +19,8 @@ import com.couchbase.client.java.document.Document
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.DStream
 
+import scala.language.implicitConversions
+
 package object streaming {
 
   implicit def toDStreamFunctions[D <: Document[_]](ds: DStream[D]): DStreamFunctions[D] =

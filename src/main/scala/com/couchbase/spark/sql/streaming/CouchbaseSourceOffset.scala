@@ -21,7 +21,7 @@ import org.apache.spark.sql.execution.streaming.{Offset, SerializedOffset}
   * An [[Offset]] for the [[CouchbaseSource]].
   */
 case class CouchbaseSourceOffset(partitionToOffsets: Map[Short, Long]) extends Offset {
-  override val json = JsonUtils.partitionOffsets(partitionToOffsets)
+  override val json: String = JsonUtils.partitionOffsets(partitionToOffsets)
 }
 
 /**

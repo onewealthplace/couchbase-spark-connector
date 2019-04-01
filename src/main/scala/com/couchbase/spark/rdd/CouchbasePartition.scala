@@ -18,5 +18,5 @@ package com.couchbase.spark.rdd
 import org.apache.spark.Partition
 
 class CouchbasePartition(idx: Int) extends Partition {
-  override def index = idx
+  override def index: Int = idx
 }

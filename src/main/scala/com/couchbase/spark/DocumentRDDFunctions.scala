@@ -26,9 +26,8 @@ import com.couchbase.client.java.util.retry.RetryBuilder
 import com.couchbase.spark.connection.{CouchbaseConfig, CouchbaseConnection, RetryOptions}
 import com.couchbase.spark.internal.OnceIterable
 import org.apache.spark.rdd.RDD
-import rx.functions.Action4
-import rx.lang.scala.Observable
 import rx.lang.scala.JavaConversions._
+import rx.lang.scala.Observable
 
 import scala.concurrent.duration.Duration
 
@@ -69,12 +68,12 @@ class DocumentRDDFunctions[D <: Document[_]](rdd: RDD[D])
                 maybeRetry(toScalaObservable(bucket.insert[D](doc)
                   .timeout(kvTimeout, TimeUnit.MILLISECONDS)), retryOpts, doc.id())
                 .doOnError(err => logWarning("Insert failed, but suppressed.", err))
-                .onErrorResumeNext(throwable => Observable.empty)
+                  .onErrorResumeNext(_ => Observable.empty)
               case StoreMode.REPLACE_AND_IGNORE =>
                 maybeRetry(toScalaObservable(bucket.replace[D](doc)
                   .timeout(kvTimeout, TimeUnit.MILLISECONDS)), retryOpts, doc.id())
                 .doOnError(err => logWarning("Replace failed, but suppressed.", err))
-                .onErrorResumeNext(throwable => Observable.empty)
+                  .onErrorResumeNext(_ => Observable.empty)
             }
           })
           .toBlocking
@@ -92,10 +91,8 @@ class DocumentRDDFunctions[D <: Document[_]](rdd: RDD[D])
               classOf[CouchbaseOutOfMemoryException])
           .delay(Delay.exponential(TimeUnit.MILLISECONDS, options.maxDelay, options.minDelay))
           .max(options.maxTries)
-          .doOnRetry(new Action4[Integer, Throwable, java.lang.Long, TimeUnit] {
-            override def call(t1: Integer, t2: Throwable, t3: Long, t4: TimeUnit): Unit = {
-              logInfo(s"Transparently Retrying Operation for ID: ${id}")
-            }
+            .doOnRetry((_: Integer, _: Throwable, _: Long, _: TimeUnit) => {
+              logInfo(s"Transparently Retrying Operation for ID: $id")
           })
           .build()
         )

@@ -67,7 +67,7 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(ids),
             bucket,
-            scala.Option.<Duration>apply(null),
+                scala.Option.apply(null),
             SparkUtil.classTag(clazz)
         ).toJavaRDD();
     }
@@ -90,13 +90,13 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(ids),
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
             SparkUtil.classTag(clazz)
         ).toJavaRDD();
     }
 
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get) {
-        return couchbaseSubdocLookup(ids, get, Collections.<String>emptyList(), null);
+        return couchbaseSubdocLookup(ids, get, Collections.emptyList(), null);
     }
 
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get, List<String> exists) {
@@ -106,7 +106,7 @@ public class CouchbaseSparkContext {
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get, List<String> exists,
         String bucket) {
-        List<SubdocLookupSpec> specs = new ArrayList<SubdocLookupSpec>(ids.size());
+        List<SubdocLookupSpec> specs = new ArrayList<>(ids.size());
         for (String id : ids) {
             specs.add(new SubdocLookupSpec(id, SparkUtil.listToSeq(get), SparkUtil.listToSeq(exists)));
         }
@@ -114,12 +114,12 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(null)
+                scala.Option.apply(null)
         ).toJavaRDD();
     }
 
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get, long timeout) {
-        return couchbaseSubdocLookup(ids, get, Collections.<String>emptyList(), null, timeout);
+        return couchbaseSubdocLookup(ids, get, Collections.emptyList(), null, timeout);
     }
 
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get, List<String> exists, long timeout) {
@@ -129,7 +129,7 @@ public class CouchbaseSparkContext {
     @SuppressWarnings({"unchecked"})
     public JavaRDD<SubdocLookupResult> couchbaseSubdocLookup(List<String> ids, List<String> get, List<String> exists,
                                                              String bucket, long timeout) {
-        List<SubdocLookupSpec> specs = new ArrayList<SubdocLookupSpec>(ids.size());
+        List<SubdocLookupSpec> specs = new ArrayList<>(ids.size());
         for (String id : ids) {
             specs.add(new SubdocLookupSpec(id, SparkUtil.listToSeq(get), SparkUtil.listToSeq(exists)));
         }
@@ -137,7 +137,7 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS))
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS))
         ).toJavaRDD();
     }
 
@@ -152,7 +152,7 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(null)
+                scala.Option.apply(null)
         ).toJavaRDD();
     }
 
@@ -167,7 +167,7 @@ public class CouchbaseSparkContext {
             sc,
             SparkUtil.listToSeq(specs),
             bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS))
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS))
         ).toJavaRDD();
     }
 
@@ -180,12 +180,12 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseViewRow> couchbaseView(final ViewQuery query, final String bucket) {
-        return new ViewRDD(sc, query, bucket, scala.Option.<Duration>apply(null), null).toJavaRDD();
+        return new ViewRDD(sc, query, bucket, scala.Option.apply(null), null).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseViewRow> couchbaseView(final ViewQuery query, final String bucket, long timeout) {
         return new ViewRDD(sc, query, bucket,
-            scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
+                scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS)),
         null).toJavaRDD();
     }
 
@@ -194,7 +194,7 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(final SpatialViewQuery query, final String bucket) {
-        return new SpatialViewRDD(sc, query, bucket, scala.Option.<Duration>apply(null)).toJavaRDD();
+        return new SpatialViewRDD(sc, query, bucket, scala.Option.apply(null)).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(final SpatialViewQuery query, long timeout) {
@@ -202,7 +202,7 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseSpatialViewRow> couchbaseSpatialView(final SpatialViewQuery query, final String bucket, long timeout) {
-        return new SpatialViewRDD(sc, query, bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
+        return new SpatialViewRDD(sc, query, bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(final N1qlQuery query) {
@@ -210,7 +210,7 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(final N1qlQuery query, final String bucket) {
-        return new QueryRDD(sc, query, bucket, scala.Option.<Duration>apply(null)).toJavaRDD();
+        return new QueryRDD(sc, query, bucket, scala.Option.apply(null)).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(final N1qlQuery query, long timeout) {
@@ -218,7 +218,7 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseQueryRow> couchbaseQuery(final N1qlQuery query, final String bucket, long timeout) {
-        return new QueryRDD(sc, query, bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
+        return new QueryRDD(sc, query, bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseAnalyticsRow> couchbaseAnalytics(final AnalyticsQuery query) {
@@ -226,7 +226,7 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseAnalyticsRow> couchbaseAnalytics(final AnalyticsQuery query, final String bucket) {
-        return new AnalyticsRDD(sc, query, bucket, scala.Option.<Duration>apply(null)).toJavaRDD();
+        return new AnalyticsRDD(sc, query, bucket, scala.Option.apply(null)).toJavaRDD();
     }
 
     public JavaRDD<CouchbaseAnalyticsRow> couchbaseAnalytics(final AnalyticsQuery query, long timeout) {
@@ -234,6 +234,6 @@ public class CouchbaseSparkContext {
     }
 
     public JavaRDD<CouchbaseAnalyticsRow> couchbaseAnalytics(final AnalyticsQuery query, final String bucket, long timeout) {
-        return new AnalyticsRDD(sc, query, bucket, scala.Option.<Duration>apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
+        return new AnalyticsRDD(sc, query, bucket, scala.Option.apply(Duration.create(timeout, TimeUnit.MILLISECONDS))).toJavaRDD();
     }
 }

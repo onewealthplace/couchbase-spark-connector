@@ -18,13 +18,13 @@ repositories {
 }
 
 ext {
-	sparkVersion = "2.3.0"
+	sparkVersion = "2.4.0"
 }
 
 dependencies {
 	compile files("$sourceSets.main.scala.outputDir")
 	compile "org.scala-lang:scala-library:%scala-version%"
-	compile "com.couchbase.client:java-client:2.7.2"
+	compile "com.couchbase.client:java-client:2.7.4"
 	compile ("com.couchbase.client:encryption:1.0.0") {
 		exclude group: 'com.fasterxml.jackson.core'
 	}
@@ -37,7 +37,7 @@ dependencies {
 	compileOnly "org.apache.spark:spark-sql_%%:$sparkVersion"
 
 	testCompile "junit:junit:4.12"
-	testCompile "org.scalatest:scalatest_%%:2.2.5"
+	testCompile "org.scalatest:scalatest_%%:3.0.5"
 	testCompile "org.apache.spark:spark-core_%%:$sparkVersion"
 	testCompile "org.apache.spark:spark-streaming_%%:$sparkVersion"
 	testCompile "org.apache.spark:spark-sql_%%:$sparkVersion"
@@ -48,7 +48,7 @@ publishing {
 		mavenJava(MavenPublication) {
 			groupId = 'com.couchbase.client'
 			artifactId = 'spark-connector'
-			version = '2.3.0-SNAPSHOT'
+			version = '2.4.0-SNAPSHOT'
 			pom {
 				description = 'Official Couchbase Spark Connector'
 			}

@@ -22,7 +22,7 @@ object LazyIterator {
    */
   def apply[T](iter: => Iterator[T]): Iterator[T] = {
     new Iterator[T] {
-      lazy val delegate = iter
+      lazy val delegate: Iterator[T] = iter
 
       override def hasNext: Boolean = delegate.hasNext
 

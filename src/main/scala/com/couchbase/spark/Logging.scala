@@ -5,14 +5,14 @@ package com.couchbase.spark
   */
 
 import org.apache.log4j.{Level, LogManager, PropertyConfigurator}
-import org.slf4j.{Logger, LoggerFactory}
 import org.slf4j.impl.StaticLoggerBinder
+import org.slf4j.{Logger, LoggerFactory}
 
 trait Logging {
 
-  @transient private var log_ : Logger = null
+  @transient private var log_ : Logger = _
 
-  protected def logName = {
+  protected def logName: String = {
     this.getClass.getName.stripSuffix("$")
   }
 
@@ -64,7 +64,7 @@ trait Logging {
     if (log.isErrorEnabled) log.error(msg, throwable)
   }
 
-  protected def isTraceEnabled(): Boolean = {
+  protected def isTraceEnabled: Boolean = {
     log.isTraceEnabled
   }
 
@@ -78,7 +78,7 @@ trait Logging {
     }
   }
 
-  def getCouchbaseClassLoader = getClass.getClassLoader
+  def getCouchbaseClassLoader: ClassLoader = getClass.getClassLoader
 
   def getContextOrCouchbaseClassLoader: ClassLoader =
     Option(Thread.currentThread().getContextClassLoader).getOrElse(getCouchbaseClassLoader)
@@ -100,10 +100,10 @@ trait Logging {
       }
 
       if (isInterpreter) {
-        val rootLogger = LogManager.getRootLogger()
+        val rootLogger = LogManager.getRootLogger
         val replLogger = LogManager.getLogger(logName)
-        val replLevel = Option(replLogger.getLevel()).getOrElse(Level.WARN)
-        if (replLevel != rootLogger.getEffectiveLevel()) {
+        val replLevel = Option(replLogger.getLevel).getOrElse(Level.WARN)
+        if (replLevel != rootLogger.getEffectiveLevel) {
           System.err.printf("Setting default log level to \"%s\".\n", replLevel)
           System.err.println("To adjust logging level use sc.setLogLevel(newLevel).")
           rootLogger.setLevel(replLevel)
@@ -126,7 +126,7 @@ private object Logging extends Logging {
       bridgeClass.getMethod("install").invoke(null)
     }
   } catch {
-    case e: ClassNotFoundException => // can't log anything yet so just fail silently
+    case _: ClassNotFoundException => // can't log anything yet so just fail silently
   }
 
   private def classForName(className: String) =

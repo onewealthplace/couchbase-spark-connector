@@ -56,7 +56,7 @@ class SubdocLookupAccessor(cbConfig: CouchbaseConfig, specs: Seq[SubdocLookupSpe
       Observable
         .from(specs)
         .flatMap(spec => {
-            var builder = bucket.lookupIn(spec.id)
+          val builder = bucket.lookupIn(spec.id)
             spec.exists.foreach(builder.exists(_))
             spec.get.foreach(builder.get(_))
             toScalaObservable(builder.execute().timeout(kvTimeout, TimeUnit.MILLISECONDS)

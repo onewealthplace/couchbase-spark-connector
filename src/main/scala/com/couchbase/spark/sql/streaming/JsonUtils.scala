@@ -15,11 +15,11 @@
  */
 package com.couchbase.spark.sql.streaming
 
-import org.json4s.NoTypeHints
 import org.json4s.jackson.Serialization
+import org.json4s.{Formats, NoTypeHints}
 
 object JsonUtils {
-  private implicit val formats = Serialization.formats(NoTypeHints)
+  private implicit val formats: AnyRef with Formats = Serialization.formats(NoTypeHints)
 
   def partitionOffsets(partitionOffsets: Map[Short, Long]): String =
     Serialization.write(partitionOffsets)

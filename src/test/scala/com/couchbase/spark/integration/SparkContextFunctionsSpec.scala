@@ -18,16 +18,16 @@ package com.couchbase.spark.integration
 import com.couchbase.client.java.Bucket
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject
-import com.couchbase.client.java.query.consistency.ScanConsistency
 import com.couchbase.client.java.query._
-import com.couchbase.client.java.view.{Stale, ViewQuery, DefaultView, DesignDocument}
+import com.couchbase.client.java.query.consistency.ScanConsistency
+import com.couchbase.client.java.view.{DefaultView, DesignDocument, Stale, ViewQuery}
+import com.couchbase.spark._
 import com.couchbase.spark.connection.{CouchbaseConfig, CouchbaseConnection}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.{SparkContext, SparkConf}
-import org.scalatest.{BeforeAndAfterAll, Matchers, FlatSpec}
-import scala.collection.JavaConversions._
+import org.apache.spark.{SparkConf, SparkContext}
+import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
-import com.couchbase.spark._
+import scala.collection.JavaConverters._
 
 /**
  * Integration test to verify Spark Context functionality in combination with Couchbase Server
@@ -41,8 +41,8 @@ class SparkContextFunctionsSpec extends FlatSpec with Matchers with BeforeAndAft
   private val appName = "cb-int-specs1"
   private val bucketName = "default"
 
-  private var sparkContext: SparkContext = null
-  private var bucket: Bucket = null
+  private var sparkContext: SparkContext = _
+  private var bucket: Bucket = _
 
   override def beforeAll(): Unit = {
     val conf = new SparkConf().setMaster(master).setAppName(appName)
@@ -51,7 +51,7 @@ class SparkContextFunctionsSpec extends FlatSpec with Matchers with BeforeAndAft
     bucket = CouchbaseConnection().bucket(CouchbaseConfig(conf), bucketName)
 
     val ddoc = DesignDocument.create("spark_design", List(DefaultView.create("view",
-      "function (doc, meta) { if (doc.type == \"user\") { emit(doc.username, null); } }"))
+      "function (doc, meta) { if (doc.type == \"user\") { emit(doc.username, null); } }")).asJava
     )
     bucket.bucketManager().upsertDesignDocument(ddoc)
 

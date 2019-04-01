@@ -57,72 +57,68 @@ class CouchbaseReceiver(config: CouchbaseConfig, bucketName: String, storageLeve
     val client = CouchbaseConnection().streamClient(config, bucketName)
 
     // Attach Callbacks
-    client.controlEventHandler(new ControlEventHandler {
-      override def onEvent(flowController: ChannelFlowController, event: ByteBuf): Unit = {
-        if (RollbackMessage.is(event)) {
-          val partition = RollbackMessage.vbucket(event)
-          client.rollbackAndRestartStream(partition, RollbackMessage.seqno(event))
-            .subscribe(new CompletableSubscriber {
-              override def onCompleted(): Unit = {
-                logTrace("DCP Rollback completed")
-              }
+    client.controlEventHandler((flowController: ChannelFlowController, event: ByteBuf) => {
+      if (RollbackMessage.is(event)) {
+        val partition = RollbackMessage.vbucket(event)
+        client.rollbackAndRestartStream(partition, RollbackMessage.seqno(event))
+          .subscribe(new CompletableSubscriber {
+            override def onCompleted(): Unit = {
+              logTrace("DCP Rollback completed")
+            }
 
-              override def onError(e: Throwable): Unit = {
-                logWarning("Error during DCP Rollback!", e)
-              }
+            override def onError(e: Throwable): Unit = {
+              logWarning("Error during DCP Rollback!", e)
+            }
 
-              override def onSubscribe(d: Subscription): Unit = {}
-            })
-        } else if (DcpSnapshotMarkerRequest.is(event)) {
-          flowController.ack(event)
-        } else {
-          event.release()
-          throw new IllegalStateException("Got unexpected DCP Control Event "
-            + MessageUtil.humanize(event))
-        }
+            override def onSubscribe(d: Subscription): Unit = {}
+          })
+      } else if (DcpSnapshotMarkerRequest.is(event)) {
+        flowController.ack(event)
+      } else {
         event.release()
+        throw new IllegalStateException("Got unexpected DCP Control Event "
+          + MessageUtil.humanize(event))
       }
+      event.release()
     })
 
-    client.dataEventHandler(new DataEventHandler {
-      override def onEvent(flowController: ChannelFlowController, event: ByteBuf): Unit = {
-        val converted: StreamMessage = if (DcpMutationMessage.is(event)) {
-          val data = new Array[Byte](DcpMutationMessage.content(event).readableBytes())
-          DcpMutationMessage.content(event).readBytes(data)
-          val key = new Array[Byte](DcpMutationMessage.key(event).readableBytes())
-          DcpMutationMessage.key(event).readBytes(key)
-          Mutation(key,
-            data,
-            DcpMutationMessage.expiry(event),
-            DcpMutationMessage.cas(event),
-            DcpMutationMessage.partition(event),
-            DcpMutationMessage.flags(event),
-            DcpMutationMessage.lockTime(event),
-            DcpDeletionMessage.bySeqno(event),
-            DcpDeletionMessage.revisionSeqno(event),
-            event.readableBytes()
-          )
-        } else if (DcpDeletionMessage.is(event)) {
-          val key = new Array[Byte](DcpDeletionMessage.key(event).readableBytes())
-          DcpDeletionMessage.key(event).readBytes(key)
-          Deletion(
-            key,
-            DcpDeletionMessage.cas(event),
-            DcpDeletionMessage.partition(event),
-            DcpDeletionMessage.bySeqno(event),
-            DcpDeletionMessage.revisionSeqno(event),
-            event.readableBytes()
-          )
-        } else {
-          event.release()
-          throw new IllegalStateException("Got unexpected DCP Data Event "
-            + MessageUtil.humanize(event))
-        }
-
-        store(converted)
-        flowController.ack(event)
+    client.dataEventHandler((flowController: ChannelFlowController, event: ByteBuf) => {
+      val converted: StreamMessage = if (DcpMutationMessage.is(event)) {
+        val data = new Array[Byte](DcpMutationMessage.content(event).readableBytes())
+        DcpMutationMessage.content(event).readBytes(data)
+        val key = new Array[Byte](DcpMutationMessage.key(event).readableBytes())
+        DcpMutationMessage.key(event).readBytes(key)
+        Mutation(key,
+          data,
+          DcpMutationMessage.expiry(event),
+          DcpMutationMessage.cas(event),
+          DcpMutationMessage.partition(event),
+          DcpMutationMessage.flags(event),
+          DcpMutationMessage.lockTime(event),
+          DcpDeletionMessage.bySeqno(event),
+          DcpDeletionMessage.revisionSeqno(event),
+          event.readableBytes()
+        )
+      } else if (DcpDeletionMessage.is(event)) {
+        val key = new Array[Byte](DcpDeletionMessage.key(event).readableBytes())
+        DcpDeletionMessage.key(event).readBytes(key)
+        Deletion(
+          key,
+          DcpDeletionMessage.cas(event),
+          DcpDeletionMessage.partition(event),
+          DcpDeletionMessage.bySeqno(event),
+          DcpDeletionMessage.revisionSeqno(event),
+          event.readableBytes()
+        )
+      } else {
         event.release()
+        throw new IllegalStateException("Got unexpected DCP Data Event "
+          + MessageUtil.humanize(event))
       }
+
+      store(converted)
+      flowController.ack(event)
+      event.release()
     })
 
 

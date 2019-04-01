@@ -36,9 +36,9 @@ class CouchbaseConnection extends Serializable with Logging {
 
   @transient var clusterRef: Option[Cluster] = None
 
-  @transient var buckets = new ConcurrentHashMap[String, Bucket]()
+  @transient val buckets = new ConcurrentHashMap[String, Bucket]()
 
-  @transient var streamClients = new ConcurrentHashMap[String, Client]()
+  @transient val streamClients = new ConcurrentHashMap[String, Client]()
 
   def cluster(cfg: CouchbaseConfig): Cluster = {
     this.synchronized {
@@ -190,6 +190,6 @@ object CouchbaseConnection {
 
   lazy val connection = new CouchbaseConnection()
 
-  def apply() = connection
+  def apply(): CouchbaseConnection = connection
 
 }

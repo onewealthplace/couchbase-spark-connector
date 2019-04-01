@@ -19,16 +19,12 @@ import com.couchbase.client.core.CouchbaseException
 import com.couchbase.client.java.document.JsonDocument
 import com.couchbase.client.java.document.json.JsonObject
 import com.couchbase.spark._
-import org.apache.spark.sql.sources._
-import org.apache.spark.sql.types.StructType
-import com.couchbase.spark.DocumentRDDFunctions
 import com.couchbase.spark.sql.streaming.{CouchbaseSink, CouchbaseSource}
-import com.couchbase.spark.streaming.FromBeginning
 import org.apache.spark.sql.execution.streaming.{Sink, Source}
+import org.apache.spark.sql.sources._
 import org.apache.spark.sql.streaming.OutputMode
+import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.{DataFrame, SQLContext, SaveMode}
-
-import scala.concurrent.duration.Duration
 
 /**
  * The default couchbase source for Spark SQL.
@@ -91,7 +87,7 @@ class DefaultSource
       case SaveMode.Overwrite => StoreMode.UPSERT
     }
 
-    val datas = data
+    data
       .toJSON
       .rdd
       .map(rawJson => {
