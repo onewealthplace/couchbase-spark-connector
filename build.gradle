@@ -18,7 +18,7 @@ repositories {
 }
 
 ext {
-	sparkVersion = "2.4.0"
+	sparkVersion = "2.4.3"
 }
 
 dependencies {
@@ -28,7 +28,7 @@ dependencies {
 	compile ("com.couchbase.client:encryption:1.0.0") {
 		exclude group: 'com.fasterxml.jackson.core'
 	}
-	compile "com.couchbase.client:dcp-client:0.21.0"
+	compile "com.couchbase.client:dcp-client:0.23.0"
 	compile "io.reactivex:rxscala_%%:0.26.5"
 	compile "org.apache.logging.log4j:log4j-api:2.2"
 
@@ -48,7 +48,7 @@ publishing {
 		mavenJava(MavenPublication) {
 			groupId = 'com.couchbase.client'
 			artifactId = 'spark-connector'
-			version = '2.4.0-SNAPSHOT'
+			version = '2.4.1'
 			pom {
 				description = 'Official Couchbase Spark Connector'
 			}
